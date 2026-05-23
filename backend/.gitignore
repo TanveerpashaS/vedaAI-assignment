@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# environment variables — never commit this
+.env
+
+# uploads (user files)
+uploads/*
+!uploads/.gitkeep
+
+# logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
