@@ -1,6 +1,6 @@
 # VedaAI — AI Assessment Creator
 
-An AI-powered question paper generator for teachers. Upload your content, configure question types and marks, and get a fully structured, exam-ready question paper in seconds — powered by GPT-4o-mini with real-time generation progress.
+An AI-powered question paper generator for teachers. Upload your content, configure question types and marks, and get a fully structured, exam-ready question paper in seconds —  with real-time generation progress.
 
 ---
 
@@ -104,7 +104,7 @@ ai-assessment-creator/
 - Node.js 18+
 - MongoDB Atlas URI
 - Upstash Redis URL
-- OpenAI API key *(optional — mock fallback works without it)*
+- OpenAI API key 
 
 ---
 
@@ -165,7 +165,7 @@ Runs at `http://localhost:3000`
 
 ---
 
-## Key Features Implemented
+## Core Features Implemented
 
 ### Assignment Creation
 - Multi-field form with full validation (no empty fields, no negative values)
