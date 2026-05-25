@@ -1,8 +1,17 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function EmptyState() {
+  const router = useRouter();
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleClick = () => {
+    setIsNavigating(true);
+    setTimeout(() => router.push('/assignments/create'), 600);
+  };
+
   return (
     <div
       style={{
@@ -102,11 +111,13 @@ export default function EmptyState() {
       </p>
 
       {/* CTA */}
-      <Link
-        href="/assignments/create"
+      <button
+        onClick={handleClick}
+        disabled={isNavigating}
         style={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: 8,
           background: '#111827',
           color: 'white',
@@ -114,15 +125,34 @@ export default function EmptyState() {
           padding: '13px 26px',
           fontSize: 14,
           fontWeight: 600,
-          textDecoration: 'none',
+          border: 'none',
+          cursor: isNavigating ? 'not-allowed' : 'pointer',
+          opacity: isNavigating ? 0.85 : 1,
+          minWidth: 220,
         }}
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-          <line x1="12" y1="5" x2="12" y2="19"/>
-          <line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-        Create Your First Assignment
-      </Link>
+        {isNavigating ? (
+          <>
+            <div style={{
+              width: 14, height: 14,
+              border: '2px solid rgba(255,255,255,0.3)',
+              borderTopColor: 'white',
+              borderRadius: '50%',
+              animation: 'spin 0.7s linear infinite',
+            }} />
+            Creating...
+          </>
+        ) : (
+          <>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Create Your First Assignment
+          </>
+        )}
+      </button>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
