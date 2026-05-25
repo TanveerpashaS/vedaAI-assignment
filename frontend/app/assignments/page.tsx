@@ -124,13 +124,6 @@ export default function AssignmentsPage() {
             </div>
 
             <div style={{ position: 'fixed', bottom: 28, left: 'calc(110px + 50%)', transform: 'translateX(-50%)', zIndex: 30 }}>
-              <style>{`
-                @keyframes floatPulse {
-                  0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.22), 0 0 0 0 rgba(249,115,22,0.6); }
-                  50% { box-shadow: 0 6px 20px rgba(0,0,0,0.22), 0 0 0 6px rgba(249,115,22,0.1); }
-                }
-                @keyframes spin { to { transform: rotate(360deg); } }
-              `}</style>
               <button
                 onClick={handleCreateClick}
                 disabled={isNavigating}
@@ -138,11 +131,10 @@ export default function AssignmentsPage() {
                 style={{
                   display: 'flex', alignItems: 'center', gap: 8,
                   padding: '13px 22px', fontSize: 14,
-                  border: '2px solid #f97316',
-                  cursor: isNavigating ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.22)',
+                  border: 'none', cursor: isNavigating ? 'not-allowed' : 'pointer',
                   opacity: isNavigating ? 0.85 : 1,
                   minWidth: 180, justifyContent: 'center',
-                  animation: isNavigating ? 'none' : 'floatPulse 2s ease-in-out infinite',
                 }}
               >
                 {isNavigating ? (
@@ -165,6 +157,7 @@ export default function AssignmentsPage() {
                   </>
                 )}
               </button>
+              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             </div>
           </>
         )}
