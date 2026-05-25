@@ -37,6 +37,47 @@ export default function CreateAssignmentPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Poll for status as fallback when WebSocket doesn't deliver events
+  useEffect(() => {
+    if (!assignmentId || !isGenerating) return;
+
+    const ts = () => new Date().toISOString();
+
+    const poll = setInterval(async () => {
+      try {
+        const { assignmentApi } = await import('@/services/api');
+        const res = await assignmentApi.getById(assignmentId);
+        if (res.success && res.data) {
+          const status = res.data.status;
+          if (status === 'completed') {
+            const { setGenerationProgress, updateAssignmentStatus } = useAssignmentStore.getState();
+            setGenerationProgress({ assignmentId, progress: 100, message: 'Question paper ready!', status: 'completed', timestamp: ts() });
+            updateAssignmentStatus(assignmentId, 'completed', res.data.generatedPaper);
+            clearInterval(poll);
+          } else if (status === 'failed') {
+            const { setGenerationProgress, updateAssignmentStatus } = useAssignmentStore.getState();
+            setGenerationProgress({ assignmentId, progress: 0, message: 'Generation failed', status: 'failed', timestamp: ts() });
+            updateAssignmentStatus(assignmentId, 'failed');
+            clearInterval(poll);
+          } else if (status === 'processing') {
+            const { setGenerationProgress } = useAssignmentStore.getState();
+            setGenerationProgress({ assignmentId, progress: 50, message: 'Generating questions...', status: 'processing', timestamp: ts() });
+          }
+        }
+      } catch {}
+    }, 3000);
+
+    return () => clearInterval(poll);
+  }, [assignmentId, isGenerating]);
+
+  // Show progress modal immediately when generation starts
+  useEffect(() => {
+    if (isGenerating && assignmentId && !generationProgress) {
+      const { setGenerationProgress } = useAssignmentStore.getState();
+      setGenerationProgress({ assignmentId, progress: 10, message: 'Starting AI generation...', status: 'processing', timestamp: new Date().toISOString() });
+    }
+  }, [isGenerating, assignmentId, generationProgress]);
+
   // Auto-navigate to output when generation completes
   useEffect(() => {
     if (generationProgress?.status === 'completed' && assignmentId) {
