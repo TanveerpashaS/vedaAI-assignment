@@ -101,6 +101,12 @@ export default function Sidebar() {
 
       {/* Create Assignment Button */}
       <div style={{ padding: '0 16px 24px' }}>
+        <style>{`
+          @keyframes borderPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.7), 0 0 0 0 rgba(249,115,22,0.4); }
+            50% { box-shadow: 0 0 0 3px rgba(249,115,22,0.3), 0 0 0 6px rgba(249,115,22,0.1); }
+          }
+        `}</style>
         <Link
           href="/assignments/create"
           style={{
@@ -108,6 +114,8 @@ export default function Sidebar() {
             width: '100%', background: '#111827', color: 'white',
             borderRadius: 999, padding: '11px 16px', fontSize: 13, fontWeight: 600,
             textDecoration: 'none',
+            border: '2px solid #f97316',
+            animation: 'borderPulse 2s ease-in-out infinite',
           }}
         >
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
